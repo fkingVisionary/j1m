@@ -14,12 +14,31 @@ import { cloneCanvas } from "@j1m/relief";
 import { gradeFromFrontCentering, psaFrontCap } from "@j1m/scoring";
 import { nodeCanvasFactory as cf, loadNormalizedImage } from "@j1m/canvas-node";
 
-const path = process.argv[2];
-const outDir = process.argv[3] || join(process.cwd(), "probe-out");
+// Positional: <image> [outDir]. Optional flags mirror the UI's manual override:
+//   --quad=tlx,tly,trx,try,brx,bry,blx,bly   (card-edge corners, % of image)
+//   --inner=l,r,t,b                           (inner frame, fractions of the card)
+const args = process.argv.slice(2);
+const flags = new Map(args.filter((a) => a.startsWith("--")).map((a) => {
+  const [k, v] = a.slice(2).split("=");
+  return [k, v] as const;
+}));
+const pos = args.filter((a) => !a.startsWith("--"));
+const path = pos[0];
+const outDir = pos[1] || join(process.cwd(), "probe-out");
 if (!path) {
-  console.error("usage: npm run centering -w tools -- <path-to-front.jpg> [outDir]");
+  console.error("usage: npm run centering -w tools -- <image> [outDir] [--quad=...] [--inner=l,r,t,b]");
   process.exit(2);
 }
+
+const nums = (s: string | undefined) => (s ? s.split(",").map(Number) : null);
+const quadArg = nums(flags.get("quad"));
+const manualQuad: Quad | null = quadArg && quadArg.length === 8
+  ? { tl: { x: quadArg[0], y: quadArg[1] }, tr: { x: quadArg[2], y: quadArg[3] }, br: { x: quadArg[4], y: quadArg[5] }, bl: { x: quadArg[6], y: quadArg[7] } }
+  : null;
+const innerArg = nums(flags.get("inner"));
+const manualInner = innerArg && innerArg.length === 4
+  ? { l: innerArg[0], r: innerArg[1], t: innerArg[2], b: innerArg[3] }
+  : null;
 
 const pxQuad = (q: Quad, W: number, H: number) => ({
   tl: { x: (q.tl.x / 100) * W, y: (q.tl.y / 100) * H },
@@ -42,16 +61,17 @@ async function main() {
   const src = canvasFrom(cf, im, 2400);
 
   const detected = autoQuad(canvasFrom(cf, im, 1100));
-  const quad = detected || FULL_QUAD;
+  const quad = manualQuad || detected || FULL_QUAD;
+  const quadSource = manualQuad ? "manual" : detected ? "cv" : "fallback";
   const rect = rectify(cf, src, quad);
-  const inner = detectInnerFrame(rect);
-  const source = detected ? "cv" : "fallback";
+  const inner = manualInner || detectInnerFrame(rect);
+  const source = manualInner ? "manual" : detected ? "cv" : "fallback";
   const c = centeringFromInner(inner, source);
 
   // ---- report ----
   console.log(`\n=== CENTERING PROBE — ${basename(path)} ===`);
   console.log(`normalized: ${norm.width}x${norm.height}  exifOrientation=${norm.exifOrientation}`);
-  console.log(`card detected (auto-quad): ${detected ? "YES" : "NO (full-frame fallback)"}`);
+  console.log(`card quad source: ${quadSource} (auto-quad ${detected ? "succeeded" : "failed"})`);
   if (c.measured && c.bordersPct) {
     console.log(`inner frame fractions: l=${inner!.l.toFixed(3)} r=${inner!.r.toFixed(3)} t=${inner!.t.toFixed(3)} b=${inner!.b.toFixed(3)}`);
     console.log(`borders %: L=${c.bordersPct.l} R=${c.bordersPct.r} T=${c.bordersPct.t} B=${c.bordersPct.b}`);

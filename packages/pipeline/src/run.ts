@@ -266,7 +266,11 @@ export async function runPipeline(input: PipelineInput, deps: PipelineDeps): Pro
   stage("synth", "active");
   const cGradeF = centerFront.measured ? gradeFromFrontCentering(centerFront.worst) : null;
   const cGradeB = centerBack && centerBack.measured ? gradeFromBackCenteringTCG(centerBack.worst) : null;
-  const centeringGrade = cGradeF != null ? (cGradeB != null ? Math.min(cGradeF, cGradeB) : cGradeF) : null;
+  // Worst (lowest) of whichever centering grades we actually measured. Critically, when
+  // the FRONT can't be measured (e.g. a full-art with no inner print frame) but the BACK
+  // can, fall back to the back grade instead of dropping centering entirely.
+  const centeringCands = [cGradeF, cGradeB].filter((g): g is number => g != null);
+  const centeringGrade = centeringCands.length ? Math.min(...centeringCands) : null;
   const segVals = segScores.map((s) => s.score).filter((n): n is number => n != null && isFinite(n) && n > 0);
 
   const payload = {
