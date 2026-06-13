@@ -1,0 +1,17 @@
+{
+  "name": "@j1m/tools",
+  "version": "0.8.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "centering": "NODE_NO_WARNINGS=1 tsx src/probe-centering.ts",
+    "build": "tsc --build"
+  },
+  "dependencies": {
+    "@j1m/cv": "*",
+    "@j1m/relief": "*",
+    "@j1m/scoring": "*",
+    "@j1m/canvas-node": "*",
+    "@napi-rs/canvas": "^0.1.65"
+  }
+}

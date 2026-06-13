@@ -15,6 +15,7 @@
     "@j1m/schemas": "*",
     "@j1m/cachekey": "*",
     "@j1m/cv": "*",
+    "@j1m/canvas-node": "*",
     "@napi-rs/canvas": "^0.1.65"
   }
 }

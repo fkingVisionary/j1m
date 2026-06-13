@@ -8,8 +8,10 @@
     { "path": "packages/schemas" },
     { "path": "packages/cachekey" },
     { "path": "packages/imaging" },
+    { "path": "packages/canvas-node" },
     { "path": "packages/pipeline" },
     { "path": "apps/proxy" },
-    { "path": "eval" }
+    { "path": "eval" },
+    { "path": "tools" }
   ]
 }

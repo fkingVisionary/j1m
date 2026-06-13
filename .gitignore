@@ -9,3 +9,6 @@ dist/
 # proxy runtime DBs (cache/log) — the eval fixtures DB is committed explicitly
 apps/proxy/data/*.sqlite
 apps/proxy/data/*.sqlite-*
+
+# stage-probe output (annotated debug images)
+probe-out/
