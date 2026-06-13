@@ -1,0 +1,17 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "lib": ["ES2022"],
+    "types": ["node"]
+  },
+  "include": ["src/**/*"],
+  "references": [
+    { "path": "../packages/cv" },
+    { "path": "../packages/scoring" },
+    { "path": "../packages/schemas" },
+    { "path": "../packages/cachekey" },
+    { "path": "../packages/pipeline" }
+  ]
+}

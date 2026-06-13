@@ -1,0 +1,11 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.env
+.env.local
+.DS_Store
+*.log
+
+# proxy runtime DBs (cache/log) — the eval fixtures DB is committed explicitly
+apps/proxy/data/*.sqlite
+apps/proxy/data/*.sqlite-*

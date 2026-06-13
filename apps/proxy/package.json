@@ -1,0 +1,18 @@
+{
+  "name": "@j1m/proxy",
+  "version": "0.8.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "NODE_NO_WARNINGS=1 tsx watch src/server.ts",
+    "start": "NODE_NO_WARNINGS=1 tsx src/server.ts",
+    "build": "tsc --build",
+    "smoke": "NODE_NO_WARNINGS=1 tsx src/smoke.ts"
+  },
+  "dependencies": {
+    "@j1m/schemas": "*",
+    "@j1m/cachekey": "*",
+    "@hono/node-server": "^1.13.7",
+    "hono": "^4.6.13"
+  }
+}

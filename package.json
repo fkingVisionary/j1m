@@ -1,0 +1,29 @@
+{
+  "name": "j1m",
+  "version": "0.8.0",
+  "private": true,
+  "description": "J1m's Grading — AI trading card pre-grader (monorepo)",
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "apps/*",
+    "eval"
+  ],
+  "scripts": {
+    "typecheck": "tsc --build",
+    "build": "npm run build --workspaces --if-present",
+    "dev:web": "npm run dev --workspace apps/web",
+    "dev:proxy": "npm run dev --workspace apps/proxy",
+    "eval": "npm run eval --workspace eval",
+    "test": "npm run test --workspaces --if-present",
+    "clean": "tsc --build --clean"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3",
+    "tsx": "^4.19.2",
+    "@types/node": "^22.9.0"
+  }
+}
