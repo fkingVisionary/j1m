@@ -1,0 +1,20 @@
+{
+  "name": "@j1m/eval",
+  "version": "0.8.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "seed": "NODE_NO_WARNINGS=1 tsx src/seed.ts",
+    "eval": "NODE_NO_WARNINGS=1 tsx src/harness.ts",
+    "parity": "NODE_NO_WARNINGS=1 tsx src/parity.ts",
+    "build": "tsc --build"
+  },
+  "dependencies": {
+    "@j1m/pipeline": "*",
+    "@j1m/scoring": "*",
+    "@j1m/schemas": "*",
+    "@j1m/cachekey": "*",
+    "@j1m/cv": "*",
+    "@napi-rs/canvas": "^0.1.65"
+  }
+}

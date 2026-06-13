@@ -1,0 +1,28 @@
+{
+  "name": "@j1m/web",
+  "version": "0.8.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit -p tsconfig.json && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@j1m/cv": "*",
+    "@j1m/relief": "*",
+    "@j1m/scoring": "*",
+    "@j1m/prompts": "*",
+    "@j1m/pipeline": "*",
+    "@j1m/imaging": "*",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^5.4.11"
+  }
+}
